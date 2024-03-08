@@ -5,8 +5,10 @@
       <div class="carousel-inner">
         <div class="carousel-item" v-for="(pelicula, index) in peliculasDestacadas" :key="pelicula.id"
           :class="{ 'active': index === 0 }">
-          <img :src="'https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/' + pelicula.backdrop_path"
-            class="d-block w-100" alt="Slide de Película">
+          <router-link :to="{ name: 'product', params: { id: pelicula.id } }">
+            <img :src="'https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/' + pelicula.backdrop_path"
+              class="d-block w-100" alt="Slide de Película">
+          </router-link>
           <div class="carousel-caption">
             <h5>{{ pelicula.title }}</h5>
             <p>{{ resumen(pelicula.overview) }}</p>
@@ -34,8 +36,10 @@
     <div class="row justify-content-center">
       <div class="col-lg-3 col-md-4 col-sm-6 mb-4" v-for="pelicula in peliculasMejorValoradas" :key="pelicula.id">
         <div class="card h-100 border-0">
-          <img :src="'https://image.tmdb.org/t/p/w500' + pelicula.poster_path" class="card-img-top rounded-3"
-            :alt="pelicula.title">
+          <router-link :to="{ name: 'product', params: { id: pelicula.id } }">
+            <img :src="'https://image.tmdb.org/t/p/w500' + pelicula.poster_path" class="card-img-top rounded-3"
+              :alt="pelicula.title">
+          </router-link>
           <div class="card-body">
             <h5 class="card-title">{{ pelicula.title }}</h5>
             <p class="card-text">{{ resumen(pelicula.overview) }}</p>
@@ -96,7 +100,6 @@ const resumen = (texto) => {
 };
 </script>
 
-
 <style lang="scss">
 @import "@/assets/scss/_variables.scss";
 
@@ -149,5 +152,14 @@ const resumen = (texto) => {
 .text-success {
   color: $color-success;
 }
-
+.card-text {
+  font-size: 1.2rem;
+  height: 120px; 
+  overflow: hidden;
+}
+.card-title {
+  font-size: 1.5rem;
+  height: 60px; 
+  overflow: hidden;
+}
 </style>

@@ -32,8 +32,8 @@
           <p>¡No disponible en España!</p>
         </div>
         <h3 class="mt-3">Reparto</h3>
-        <div class="row ms-4">
-          <div class="col-3" v-for="actor in castproduct.slice(0, 4)" :key="actor.id">
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-3" v-for="actor in castproduct.slice(0, 4)" :key="actor.id">
             <div class="actor-container">
               <img class="img-actor img-fluid mb-2 me-2" :src="getImageUrl(actor.profile_path)" :alt="actor.name">
               <button class="btn btn-primary" @click="$router.push('/actor?id=' + actor.id)">
@@ -52,22 +52,12 @@
     </div>
 
     <div>
-      <div class="accordion" id="accordionReviews">
-        <div class="accordion-item" v-for="(review, index) in reviewsproduct.slice(0, 4)" :key="review.id">
-          <h2 class="accordion-header" id="heading{{ index }}">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + index"
-              aria-expanded="true" :aria-controls="'collapse' + index">
-              {{ review.author }}
-            </button>
-          </h2>
-          <div :id="'collapse' + index" class="accordion-collapse collapse" aria-labelledby="heading{{ index }}">
-            <div class="accordion-body">
-              {{ review.content }}
-            </div>
-          </div>
-        </div>
+      <div v-for="(review, index) in reviewsproduct.slice(0, 4)" :key="review.id" class="mb-3">
+        <h5>{{ review.author }}</h5>
+        <p>{{ review.content }}</p>
       </div>
     </div>
+
 
     <h2 class="mt-5 mb-4 text-center">Similares</h2>
     <div class="row ms-4">
@@ -84,15 +74,16 @@
     </div>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-      @hide.bs.modal="stopVideo">
-      <div class="modal-dialog" style="margin-left: 28em;">
+      @hidden.bs.modal="stopVideo">
+      <div class="modal-dialog" style="width: 100%; height: 100vh;">
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">Official Trailer: {{ product.title }}</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <iframe class="embed-responsive-item" :src="trailerUrl" frameborder="0" allowfullscreen></iframe>
+            <iframe class="embed-responsive-item" :src="trailerUrl" frameborder="0" style="width: 100%; height: 100%;"
+              allowfullscreen></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -100,6 +91,7 @@
         </div>
       </div>
     </div>
+
   </div>
   <main>
     <RouterView />
@@ -232,10 +224,12 @@ const addWatchlist = async () => {
 
 
 const stopVideo = () => {
-  const iframe = document.querySelector('iframe');
-  const iframeSrc = iframe.src;
-  iframe.src = iframeSrc;
+  const iframe = document.querySelector('#exampleModal iframe');
+  const player = new Vimeo.Player(iframe);
+  player.pause();
 };
+
+
 
 
 
@@ -320,13 +314,13 @@ function getImageUrl(posterPath) {
   height: auto;
   border-radius: 5px;
 }
+
 .accordion-item {
-  border-bottom: 1px solid black; 
+  border-bottom: 1px solid black;
 }
 
 .accordion-button {
-  background-color: #fff; 
-  color: black; 
+  background-color: #fff;
+  color: black;
 }
-
 </style>
